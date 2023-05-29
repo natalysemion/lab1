@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Lab1Football.Models.Headcoach>
+
+@{
+    ViewData["Title"] = "Головні тренери";
+}
+
+<h1>Головні тренери</h1>
+
+<p>
+    <a asp-action="Create">Додати нового тренери</a>
+</p>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Шукати за ім'ям: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Пошук" class="btn btn-dark" />|
+            <a asp-action="Index">Повернутися до повного списку</a>
+
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Name)</a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Achievements)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Achievements)
+            </td>
+            <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Деталі</a> 
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Змінити</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" >❌</a>
+                        }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
